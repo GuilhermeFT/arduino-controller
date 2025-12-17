@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Arduino Control DEMO</string>
+    <string name="main_fragment_com">Servidor:</string>
+    <string name="main_fragment_ip">Endereço IP/Porta:</string>
+    <string name="main_fragment_warning">Não configurado. Vá nas configurações</string>
+    <string name="main_fragment_error">Endereço e porta não responde. Verifique seu servidor ou altere as configurações</string>
+    <string name="settings_fragment_conf_host">Configurações do servidor TCP</string>
+
+    <string name="host_settings_activity_title">Configurar servidor TCP</string>
+    <string name="host_display_activity_title">Alterar comandos de envio dos botões</string>
+    <string name="host_settings_activity_hint_address">Endereço IP</string>
+    <string name="host_settings_activity_hint_port">Porta</string>
+    <string name="try_connect">Conectar/salvar</string>
+
+    <string name="a1">Salvo em suas configurações</string>
+    <string name="a2">Conexão mal-sucedida! Verifique o endereço, porta ou o servidor TCP</string>
+
+    <string name="btn_Enviar">Enviar</string>
+    <string name="hint_send">Informação a ser enviada</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_home">Início</string>
+    <string name="title_log">Serial</string>
+    <string name="title_settings">Configurações</string>
+</resources>

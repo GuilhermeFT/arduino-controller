@@ -1,0 +1,144 @@
+package br.guiftapps.arduinocontroller.View
+
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.os.Bundle
+import android.text.Html
+import android.util.Log
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.InterstitialAd
+import com.guiftapps.arduinocontroller.R
+
+
+// TODO: Rename parameter arguments, choose names that match
+// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+private const val ARG_PARAM1 = "param1"
+private const val ARG_PARAM2 = "param2"
+
+/**
+ * A simple [Fragment] subclass.
+ * Activities that contain this fragment must implement the
+ * [SettingsFragment.OnFragmentInteractionListener] interface
+ * to handle interaction events.
+ * Use the [SettingsFragment.newInstance] factory method to
+ * create an instance of this fragment.
+ *
+ */
+class SettingsFragment : Fragment() {
+    // TODO: Rename and change types of parameters
+    private var param1: String? = null
+    private var param2: String? = null
+    private var listener: OnFragmentInteractionListener? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            param1 = it.getString(ARG_PARAM1)
+            param2 = it.getString(ARG_PARAM2)
+        }
+    }
+
+    private lateinit var mInterstitialAd: InterstitialAd
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        var v : View = inflater.inflate(R.layout.fragment_settings, container, false)
+        var conf = v.findViewById<Button>(R.id.btn_configs)
+        var play = v.findViewById<Button>(R.id.btn_commands)
+        var pol = v.findViewById<TextView>(R.id.txt_Pol)
+        pol.text = Html.fromHtml("Leia as <a href=\"https://guilhermeft.wixsite.com/minhanota/copia-politica-de-privacidade\">políticas de privacidade</a> deste aplicativo. ")
+        pol.movementMethod = android.text.method.LinkMovementMethod.getInstance()
+        play.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse(
+                    "https://play.google.com/store/apps/details?id=br.gftapps.arduinocontrolpro")
+            }
+            startActivity(intent)
+        }
+        conf.setOnClickListener {
+            var intent = Intent(context, HostSettingsActivity::class.java)
+            if (mInterstitialAd.isLoaded) {
+                mInterstitialAd.show()
+            } else {
+                Log.d("TAG", "The interstitial wasn't loaded yet.")
+            }
+            startActivity(intent)
+        }
+
+        mInterstitialAd = InterstitialAd(activity!!.applicationContext)
+        mInterstitialAd.adUnitId = "ca-app-pub-2865932856120238/3329475036"
+        mInterstitialAd.loadAd(AdRequest.Builder().build())
+        mInterstitialAd.adListener = object : AdListener() {
+            override fun onAdClosed() {
+                mInterstitialAd.loadAd(AdRequest.Builder().build())
+            }
+        }
+
+        return v
+    }
+
+    // TODO: Rename method, update argument and hook method into UI event
+    fun onButtonPressed(uri: Uri) {
+        listener?.onFragmentInteraction(uri)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnFragmentInteractionListener) {
+            listener = context
+        } else {
+            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        listener = null
+    }
+
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     *
+     *
+     * See the Android Training lesson [Communicating with Other Fragments]
+     * (http://developer.android.com/training/basics/fragments/communicating.html)
+     * for more information.
+     */
+    interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        fun onFragmentInteraction(uri: Uri)
+    }
+
+    companion object {
+        /**
+         * Use this factory method to create a new instance of
+         * this fragment using the provided parameters.
+         *
+         * @param param1 Parameter 1.
+         * @param param2 Parameter 2.
+         * @return A new instance of fragment SettingsFragment.
+         */
+        // TODO: Rename and change types and number of parameters
+        @JvmStatic
+        fun newInstance(param1: String, param2: String) =
+            SettingsFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_PARAM1, param1)
+                    putString(ARG_PARAM2, param2)
+                }
+            }
+    }
+}
